@@ -32,7 +32,7 @@ const ForecastChart: React.FC<ForecastChartProps> = ({ data }) => {
           formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value), 'Forecasted']}
         />
         <Legend />
-        <Bar dataKey="forecasted" fill="#4299E1" />
+        <Bar dataKey="forecasted" fill="#2b71e0" />
       </BarChart>
     </ResponsiveContainer>
   );

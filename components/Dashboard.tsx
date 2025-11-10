@@ -47,15 +47,15 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigateToProfile }) => {
                 <span>Filters</span>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-                <select name="month" value={filters.month} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
+                <select name="month" value={filters.month} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
                     <option value="all">All Months</option>
                     {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
-                <select name="responsiblePerson" value={filters.responsiblePerson} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
+                <select name="responsiblePerson" value={filters.responsiblePerson} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
                     <option value="all">All People</option>
                     {responsiblePeople.map(p => <option key={p} value={p}>{p}</option>)}
                 </select>
-                <select name="hasVat" value={filters.hasVat} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-blue-500 focus:border-blue-500">
+                <select name="hasVat" value={filters.hasVat} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
                     <option value="all">All VAT Status</option>
                     <option value="yes">With VAT</option>
                     <option value="no">Without VAT</option>
@@ -67,7 +67,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigateToProfile }) => {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
             <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
               <h2 className="text-2xl font-bold">Forecast & Report</h2>
-              <button onClick={handleRunForecast} disabled={loading} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-400 transition">
+              <button onClick={handleRunForecast} disabled={loading} className="flex items-center gap-2 px-4 py-2 bg-[#2826a9] text-white rounded-md hover:bg-[#22208a] disabled:bg-[#2826a9]/50 transition">
                 {loading ? (
                   <>
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
