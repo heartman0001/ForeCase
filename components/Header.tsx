@@ -49,13 +49,17 @@ const Header: React.FC<HeaderProps> = ({ onNavigateToProfile }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">Fore Cash</h1>
+            <img 
+              className="h-8 w-auto" 
+              src="https://www.wewebplus.com/img/static/wewebplus.svg" 
+              alt="WeWebPlus Logo" 
+            />
           </div>
           <div className="flex items-center">
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center p-2 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-blue-500 transition"
+                className="flex items-center p-2 bg-gray-100 dark:bg-gray-700 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 dark:focus:ring-offset-gray-800 focus:ring-[#2826a9] transition"
               >
                 <span className="sr-only">Open user menu</span>
                 <UserCircleIcon className="h-7 w-7" />

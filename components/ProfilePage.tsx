@@ -33,7 +33,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigateToDashboard }) => {
       <div className="w-full max-w-2xl">
         <button 
           onClick={onNavigateToDashboard} 
-          className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline mb-6"
+          className="flex items-center gap-2 text-[#2826a9] dark:text-[#2b71e0] hover:underline mb-6"
         >
           <ArrowLeftIcon className="h-5 w-5" />
           Back to Dashboard
@@ -52,7 +52,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigateToDashboard }) => {
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="mt-1 w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2826a9] focus:border-transparent"
                 required
               />
             </div>
@@ -67,7 +67,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigateToDashboard }) => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2826a9] focus:border-transparent"
                 required
               />
             </div>
@@ -80,7 +80,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ onNavigateToDashboard }) => {
               )}
               <button
                 type="submit"
-                className="inline-flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150"
+                className="inline-flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#2826a9] hover:bg-[#22208a] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2826a9] transition duration-150"
               >
                 <SaveIcon className="h-5 w-5 mr-2" />
                 Save Changes
