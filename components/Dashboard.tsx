@@ -1,120 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { useData } from '../context/DataContext';
-import Header from './Header';
-import ReceivablesTable from './ReceivablesTable';
-import ForecastChart from './ForecastChart';
-import AddRecordModal from './AddRecordModal';
-import { AddIcon, ChartIcon, ExcelIcon, FilterIcon, PdfIcon } from './icons';
+// 📄 components/Dashboard.tsx
+import React, { useEffect, useState } from 'react'
+import { getInvoices, deleteInvoice } from '../services/invoiceService'
+import AddRecordModal from './AddRecordModal'
+import EditInvoiceModal from './EditInvoiceModal'
 
-interface DashboardProps {
-  onNavigateToProfile: () => void;
-}
+export default function Dashboard() {
+  const [invoices, setInvoices] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [isAddOpen, setIsAddOpen] = useState(false)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
 
-const Dashboard: React.FC<DashboardProps> = ({ onNavigateToProfile }) => {
-  const { filteredRecords, forecastData, responsiblePeople, runForecast, applyFilters, loading } = useData();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filters, setFilters] = useState({ responsiblePerson: 'all', hasVat: 'all', month: 'all' });
+  async function loadInvoices() {
+    setLoading(true)
+    try {
+      const data = await getInvoices()
+      setInvoices(data)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    applyFilters(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
+    loadInvoices()
+  }, [])
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleRunForecast = () => {
-    runForecast();
-  };
-
-  const handleExport = (format: 'PDF' | 'Excel') => {
-    // In a real app, this would trigger a backend API call
-    alert(`Exporting report as ${format}...`);
-  };
+  async function handleDelete(id: number) {
+    if (!window.confirm('คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้?')) return
+    await deleteInvoice(id)
+    alert('✅ ลบข้อมูลสำเร็จ')
+    loadInvoices()
+  }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-      <Header onNavigateToProfile={onNavigateToProfile} />
-      <main className="p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl mx-auto space-y-6">
-          
-          {/* Action Bar & Filters */}
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-2 text-xl font-semibold">
-                <FilterIcon className="h-6 w-6"/>
-                <span>Filters</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-4">
-                <select name="month" value={filters.month} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
-                    <option value="all">All Months</option>
-                    {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].map(m => <option key={m} value={m}>{m}</option>)}
-                </select>
-                <select name="responsiblePerson" value={filters.responsiblePerson} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
-                    <option value="all">All People</option>
-                    {responsiblePeople.map(p => <option key={p} value={p}>{p}</option>)}
-                </select>
-                <select name="hasVat" value={filters.hasVat} onChange={handleFilterChange} className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md p-2 focus:ring-[#2826a9] focus:border-[#2826a9]">
-                    <option value="all">All VAT Status</option>
-                    <option value="yes">With VAT</option>
-                    <option value="no">Without VAT</option>
-                </select>
-            </div>
-          </div>
-          
-          {/* Forecast Section */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
-              <h2 className="text-2xl font-bold">Forecast & Report</h2>
-              <button onClick={handleRunForecast} disabled={loading} className="flex items-center gap-2 px-4 py-2 bg-[#2826a9] text-white rounded-md hover:bg-[#22208a] disabled:bg-[#2826a9]/50 transition">
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Running...
-                  </>
-                ) : (
-                   <> <ChartIcon className="h-5 w-5" /> Run Forecast </>
-                )}
-              </button>
-            </div>
-            <div className="h-80 w-full">
-              {forecastData.length > 0 ? (
-                <ForecastChart data={forecastData} />
-              ) : (
-                <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-700 rounded-md">
-                  <p className="text-gray-500">Run a forecast to see the chart.</p>
-                </div>
-              )}
-            </div>
-          </div>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">📊 รายการ Invoice</h1>
+      <button
+        onClick={() => setIsAddOpen(true)}
+        className="mb-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+      >
+         เพิ่ม Invoice
+      </button>
 
-          {/* Receivables Table Section */}
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
-              <h2 className="text-2xl font-bold">Receivables Data</h2>
-              <div className="flex gap-2">
-                 <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
-                  <AddIcon className="h-5 w-5" /> Add Record
-                </button>
-                <button onClick={() => handleExport('PDF')} className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">
-                  <PdfIcon className="h-5 w-5" /> Export PDF
-                </button>
-                <button onClick={() => handleExport('Excel')} className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition">
-                  <ExcelIcon className="h-5 w-5" /> Export Excel
-                </button>
-              </div>
-            </div>
-            <ReceivablesTable records={filteredRecords} />
-          </div>
-        </div>
-      </main>
-      <AddRecordModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      {loading ? (
+        <p>กำลังโหลดข้อมูล...</p>
+      ) : invoices.length === 0 ? (
+        <p>ไม่มีข้อมูล</p>
+      ) : (
+        <table className="w-full border">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-2 border">Project</th>
+              <th className="p-2 border">Customer</th>
+              <th className="p-2 border">Amount</th>
+              <th className="p-2 border">Billing Date</th>
+              <th className="p-2 border">Status</th>
+              <th className="p-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {invoices.map((inv) => (
+              <tr key={inv.id} className="text-center">
+                <td className="border p-2">{inv.projects?.project_name}</td>
+                <td className="border p-2">{inv.customers?.customer_name}</td>
+                <td className="border p-2">{inv.amount?.toLocaleString()}</td>
+                <td className="border p-2">{inv.billing_date}</td>
+                <td className="border p-2">{inv.status}</td>
+                <td className="border p-2 space-x-2">
+                  <button
+                    onClick={() => {
+                      setSelectedId(inv.id)
+                      setIsEditOpen(true)
+                    }}
+                    className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+                  >
+                    ✏️ แก้ไข
+                  </button>
+                  <button
+                    onClick={() => handleDelete(inv.id)}
+                    className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+                  >
+                    🗑️ ลบ
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      <AddRecordModal
+        isOpen={isAddOpen}
+        onClose={() => setIsAddOpen(false)}
+        onAdded={loadInvoices}
+      />
+
+      <EditInvoiceModal
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        invoiceId={selectedId}
+        onUpdated={loadInvoices}
+      />
     </div>
-  );
-};
-
-export default Dashboard;
+  )
+}
