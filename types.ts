@@ -4,8 +4,13 @@
 export interface Customer {
   id: number
   customer_name: string
-  // เพิ่มฟิลด์อื่นถ้ามี
+  contact_name?: string
+  phone?: string
+  credit_term_days?: number
+  vat_registered?: boolean
+  // เพิ่มฟิลด์อื่น ๆ ตาม DB ถ้ามี
 }
+
 
 /** ตารางโครงการ (projects) */
 export interface Project {

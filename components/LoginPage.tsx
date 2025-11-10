@@ -54,7 +54,7 @@ export default function LoginPage() {
               className="w-full border rounded-lg px-3 py-2"
               required
             />
-          </div>
+          </div>  
 
           <div>
             <label className="block mb-1 text-sm font-medium">รหัสผ่าน</label>
