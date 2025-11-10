@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useData } from '../context/DataContext';
 import Header from './Header';
@@ -7,7 +6,11 @@ import ForecastChart from './ForecastChart';
 import AddRecordModal from './AddRecordModal';
 import { AddIcon, ChartIcon, ExcelIcon, FilterIcon, PdfIcon } from './icons';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onNavigateToProfile: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onNavigateToProfile }) => {
   const { filteredRecords, forecastData, responsiblePeople, runForecast, applyFilters, loading } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState({ responsiblePerson: 'all', hasVat: 'all', month: 'all' });
@@ -33,7 +36,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-      <Header />
+      <Header onNavigateToProfile={onNavigateToProfile} />
       <main className="p-4 sm:p-6 lg:p-8">
         <div className="max-w-7xl mx-auto space-y-6">
           

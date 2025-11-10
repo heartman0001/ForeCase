@@ -1,14 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { LogoutIcon, UserCircleIcon, ChevronDownIcon } from './icons';
+import { LogoutIcon, UserCircleIcon, ChevronDownIcon, PencilIcon } from './icons';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onNavigateToProfile: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onNavigateToProfile }) => {
   const { user, logout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleProfileClick = () => {
-    alert('Profile management feature coming soon!');
+  const handleProfileClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onNavigateToProfile();
     setIsDropdownOpen(false);
   }
 
@@ -68,13 +73,14 @@ const Header: React.FC = () => {
                     <strong className="truncate">{user?.email}</strong>
                   </div>
                   <div className="border-t border-gray-100 dark:border-gray-600"></div>
-                  <a href="#" onClick={handleProfileClick} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">Manage Profile</a>
-                  <a href="#" onClick={handleLogout} className="block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <div className="flex items-center">
-                      <LogoutIcon className="h-5 w-5 mr-2" />
-                      Logout
-                    </div>
+                  <a href="#" onClick={handleProfileClick} className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <PencilIcon className="h-5 w-5 mr-2" />
+                    Manage Profile
                   </a>
+                  <button onClick={handleLogout} className="w-full text-left flex items-center px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <LogoutIcon className="h-5 w-5 mr-2" />
+                    Logout
+                  </button>
                 </div>
               )}
             </div>
