@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
-// import { useAuth } from '@/context/AuthContext'
-import { useAuth } from '../context/AuthContext'
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleRegister(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
     })
@@ -24,27 +22,18 @@ export default function LoginPage() {
     if (error) {
       setError(error.message)
     } else {
-      navigate('/dashboard')
+      alert('✅ สมัครสมาชิกสำเร็จ! โปรดตรวจสอบอีเมลของคุณเพื่อยืนยันบัญชี')
+      navigate('/login')
     }
     setLoading(false)
   }
 
-  const { signInWithGoogle } = useAuth()
-
-  // ✅ เพิ่มตรงนี้ — Login ด้วย Google
-  // async function handleGoogleLogin() {
-  //   const { error } = await supabase.auth.signInWithOAuth({
-  //     provider: 'google',
-  //   })
-  //   if (error) alert(error.message)
-  // }
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-50">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow">
-        <h1 className="text-2xl font-bold mb-6 text-center">เข้าสู่ระบบ</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">สมัครสมาชิก</h1>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleRegister} className="space-y-4">
           <div>
             <label className="block mb-1 text-sm font-medium">อีเมล</label>
             <input
@@ -74,24 +63,17 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           >
-            {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+            {loading ? 'กำลังสมัคร...' : 'สมัครสมาชิก'}
           </button>
         </form>
 
-        {/* ✅ ปุ่ม Google Login */}
-        <button
-          onClick={signInWithGoogle}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg"
-        >
-          Sign in with Google
-        </button>
         <p className="text-center text-sm mt-4">
-          ยังไม่มีบัญชี?{' '}
+          มีบัญชีอยู่แล้ว?{' '}
           <button
-            onClick={() => navigate('/register')}
+            onClick={() => navigate('/login')}
             className="text-blue-600 hover:underline"
           >
-            สมัครสมาชิก
+            เข้าสู่ระบบ
           </button>
         </p>
       </div>

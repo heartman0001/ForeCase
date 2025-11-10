@@ -1,64 +1,61 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { User } from '../types';
+import { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '../lib/supabaseClient'
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  user: User | null;
-  login: (email: string) => void;
-  logout: () => void;
-  updateUser: (updatedUser: User) => void;
-}
+const AuthContext = createContext<any>(null)
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-
+  // ✅ ดึง session ปัจจุบัน
   useEffect(() => {
-    // Check for a token in localStorage on initial load
-    const token = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('user');
-    if (token && storedUser) {
-      setIsAuthenticated(true);
-      setUser(JSON.parse(storedUser));
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession()
+      setUser(data?.session?.user ?? null)
+      setLoading(false)
     }
-  }, []);
+    getSession()
 
-  const login = (email: string) => {
-    // Simulate API call and token retrieval
-    const mockToken = 'mock-jwt-token';
-    const mockUser: User = { email, name: email.split('@')[0] };
+    // ✅ ฟัง event login/logout
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
 
-    localStorage.setItem('authToken', mockToken);
-    localStorage.setItem('user', JSON.stringify(mockUser));
-    setUser(mockUser);
-    setIsAuthenticated(true);
-  };
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
-  const logout = () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
-    setUser(null);
-    setIsAuthenticated(false);
-  };
+  // ✅ Sync user ลงตาราง users
+  useEffect(() => {
+    if (user) {
+      supabase.from('users').upsert({
+        auth_uid: user.id,
+        email: user.email,
+        display_name: user.user_metadata?.full_name ?? '',
+      })
+    }
+  }, [user])
 
-  const updateUser = (updatedUser: User) => {
-    setUser(updatedUser);
-    localStorage.setItem('user', JSON.stringify(updatedUser));
-  };
+  // ✅ Login ด้วย Google พร้อม redirect กลับ Dashboard
+  const signInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/dashboard`, // สำคัญมาก!
+      },
+    })
+  }
+
+  // ✅ Logout
+  const signOut = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+  }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, updateUser }}>
-      {children}
+    <AuthContext.Provider value={{ user, signInWithGoogle, signOut, loading }}>
+      {!loading && children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+export const useAuth = () => useContext(AuthContext)
