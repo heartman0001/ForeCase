@@ -13,6 +13,18 @@ export async function getCustomers() {
   return data as Customer[]
 }
 
+// ✅ ดึงข้อมูลลูกค้าตาม ID
+export async function getCustomerById(id: number) {
+  const { data, error } = await supabase
+    .from('customers')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+  if (error) throw error
+  return data as Customer
+}
+
 // ✅ เพิ่มลูกค้าใหม่
 export async function addCustomer(customer: Omit<Customer, 'id' | 'created_at' | 'updated_at'>) {
   const { data, error } = await supabase.from('customers').insert([customer]).select()

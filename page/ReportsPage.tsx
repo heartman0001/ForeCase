@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react' // Import useRef
 import { getMonthlyReport } from '../services/reportService'
+import ReportCustomerDetailModal from '../components/ReportCustomerDetailModal'
+import ExportButtons from '../components/ExportButtons' // Import ExportButtons
 
 export default function ReportsPage() {
   const [report, setReport] = useState<any[]>([])
   const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
   const [year, setYear] = useState<number>(new Date().getFullYear())
   const [loading, setLoading] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedReportEntry, setSelectedReportEntry] = useState<any | null>(null)
+
+  const tableRef = useRef<HTMLTableElement>(null) // Create a ref for the table
 
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
@@ -28,6 +34,7 @@ export default function ReportsPage() {
     }
   }
 
+
   // ✅ Filter reports by search term
   const filteredReport = report.filter(
     (r) =>
@@ -45,6 +52,7 @@ export default function ReportsPage() {
   return (
     <div className="p-6 bg-white rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-4">📅 รายงานรายเดือน</h1>
+
 
       {/* Filters */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
@@ -138,6 +146,12 @@ export default function ReportsPage() {
           </div>
         </>
       )}
+
+      <ReportCustomerDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        reportEntry={selectedReportEntry}
+      />
     </div>
   )
 }
