@@ -31,30 +31,34 @@ export default function Dashboard() {
   return (
     <div className="p-6">
      
+      
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+      {/* Main Content Grid */}
+      <div className="flex flex-col lg:flex-row gap-6">
 
+        {/* Left Column */}
+        <div className="w-full lg:w-2/3 flex flex-col gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <RevenueByProjectChart />
+            <RevenueByCustomerChart />
+          </div>
+          <UpcomingInstallments />
         </div>
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+
+        {/* Right Column */}
+        <div className="w-full lg:w-1/3 flex flex-col gap-6">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
+            <h2 className="text-lg font-semibold text-gray-400">Total Projects</h2>
+            <p className="text-4xl font-bold">{projectCount}</p>
+          </div>
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
             <h2 className="text-lg font-semibold text-gray-400">Total Customers</h2>
             <p className="text-4xl font-bold">{customerCount}</p>
+          </div>
+          <KeyMetrics />
+          <RecentlyPaid />
         </div>
-      </div>
 
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-
-        <RevenueByProjectChart />
-        <RevenueByCustomerChart />
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 mb-6">
-        <UpcomingInstallments />
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <KeyMetrics />
-        <RecentlyPaid />
       </div>
     </div>
   )

@@ -46,8 +46,8 @@ const UpcomingInstallments = () => {
   }
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white h-full">
-      <h2 className="text-xl font-semibold mb-4">Upcoming Deadlines</h2>
+    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white h-full ">
+      <h2 className="text-xl font-semibold mb-4 ">Upcoming Deadlines</h2>
       {upcoming.length === 0 ? (
         <p className="text-gray-400">No upcoming deadlines found.</p>
       ) : (
