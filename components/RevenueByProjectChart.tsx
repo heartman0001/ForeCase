@@ -92,7 +92,7 @@ const RevenueByProjectChart = () => {
             }}
             formatter={(value: number, name: string, entry: any) => {
                 const { count } = entry.payload;
-                const formattedRevenue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+                const formattedRevenue = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(value);
                 return [`${formattedRevenue} (${count} installments)`, 'Revenue'];
             }}
             />
