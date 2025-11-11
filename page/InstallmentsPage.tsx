@@ -18,7 +18,7 @@ export default function InstallmentsPage() {
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 12
 
   useEffect(() => {
     loadInstallments()
