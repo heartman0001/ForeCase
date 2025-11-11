@@ -419,10 +419,12 @@ export default function AddRecordModal({ isOpen, onClose, onAdded, invoiceId }: 
                   className="w-full border rounded-lg px-3 py-2"
                 >
                   <option value="">-- Select Status --</option>
-                  <option value="draft">Draft</option>
-                  <option value="billed">Billed</option>
-                  <option value="paid">Paid</option>
-                  <option value="overdue">Overdue</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Draft">Draft</option>
+                  <option value="Billed">Billed</option>
+                  <option value="Overdue">Overdue</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Cancelled">Cancelled</option>
                 </select>
               </div>
             </div>
