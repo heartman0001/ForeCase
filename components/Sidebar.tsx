@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom"
-import { Home, Users, Briefcase, Bell, FileText, Layers, Calendar } from "lucide-react"
+import { Home, Users, Briefcase, Bell, FileText, Layers, Calendar, LogOut } from "lucide-react"
+import { useAuth } from "../context/AuthContext"
 
 export default function Sidebar() {
+  const { signOut } = useAuth()
   const navItems = [
     { path: "/dashboard", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
     { path: "/dashboard/customer", label: "Customer Dashboard", icon: <Users className="w-5 h-5 ml-4" /> }, // เมนูย่อย
@@ -48,6 +50,18 @@ export default function Sidebar() {
           </NavLink>
         ))}
       </nav>
+
+      {/* Logout Button */}
+      <div className="mt-auto pt-4">
+        <button
+          onClick={signOut}
+          className="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 w-full
+                     hover:bg-red-500 hover:text-white text-red-600 font-semibold"
+        >
+          <LogOut className="w-5 h-5" />
+          <span>Logout</span>
+        </button>
+      </div>
     </div>
 
   )
