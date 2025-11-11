@@ -133,5 +133,5 @@ export interface Notification {
     billing_date: string
     payment_date: string
     status: string
-  }
+  }[] // เปลี่ยนเป็น array
 }
