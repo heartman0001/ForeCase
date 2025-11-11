@@ -16,7 +16,7 @@ export default function ReportsPage() {
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 10
 
   useEffect(() => {
     loadReport()
@@ -34,6 +34,16 @@ export default function ReportsPage() {
     }
   }
 
+
+  const handleRowClick = (entry: any) => {
+    setSelectedReportEntry(entry)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedReportEntry(null)
+  }
 
   // ✅ Filter reports by search term
   const filteredReport = report.filter(
@@ -97,32 +107,48 @@ export default function ReportsPage() {
         <p>ไม่มีข้อมูลในเดือนนี้</p>
       ) : (
         <>
-          <table className="w-full border text-sm">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="p-2 border">ลูกค้า</th>
-                <th className="p-2 border">โปรเจกต์</th>
-                <th className="p-2 border">ยอดวางบิล</th>
-                <th className="p-2 border">วันที่วางบิล</th>
-                <th className="p-2 border">เครดิตเทอม</th>
-                <th className="p-2 border">คาดว่าเงินเข้า</th>
-                <th className="p-2 border">สถานะ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentReports.map((r) => (
-                <tr key={r.id} className="hover:bg-gray-50">
-                  <td className="p-2 border">{r.customer_name}</td>
-                  <td className="p-2 border">{r.project_name}</td>
-                  <td className="p-2 border text-right">{r.amount?.toLocaleString()}</td>
-                  <td className="p-2 border">{r.billing_date}</td>
-                  <td className="p-2 border text-center">{r.credit_term_days || '-'}</td>
-                  <td className="p-2 border text-blue-600">{r.expected_payment_date}</td>
-                  <td className="p-2 border">{r.status}</td>
+          <div ref={tableRef} className="w-full">
+            <h2 className="text-xl font-bold mb-2">รายงานรายเดือน</h2>
+            <p className="mb-1">ปี: {year}</p>
+            <p className="mb-4">เดือน: {month}</p>
+            <table className="w-full border text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2 border">ลูกค้า</th>
+                  <th className="p-2 border">โปรเจกต์</th>
+                  <th className="p-2 border">ยอดวางบิล</th>
+                  <th className="p-2 border">วันที่วางบิล</th>
+                  <th className="p-2 border">เครดิตเทอม</th>
+                  <th className="p-2 border">คาดว่าเงินเข้า</th>
+                  <th className="p-2 border">สถานะ</th>
+                  <th className="p-2 border action-column">การดำเนินการ</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentReports.map((r) => (
+                  <tr key={r.id} className="hover:bg-gray-50">
+                    <td className="p-2 border">{r.customer_name}</td>
+                    <td className="p-2 border">{r.project_name}</td>
+                    <td className="p-2 border text-right">{r.amount?.toLocaleString()}</td>
+                    <td className="p-2 border">{r.billing_date}</td>
+                    <td className="p-2 border text-center">{r.credit_term_days || '-'}</td>
+                    <td className="p-2 border text-blue-600">{r.expected_payment_date}</td>
+                    <td className="p-2 border">{r.status}</td>
+                    <td className="p-2 border text-center action-column">
+                      <button
+                        onClick={() => handleRowClick(r)}
+                        className="bg-[#2b71ed] text-white px-3 py-1 rounded hover:bg-[#2826a9] transition text-xs"
+                      >
+                        ดูรายละเอียด
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          
 
           {/* ✅ Pagination Controls */}
           <div className="flex justify-center items-center gap-2 mt-4">
@@ -144,12 +170,16 @@ export default function ReportsPage() {
               ถัดไป ▶
             </button>
           </div>
+          <ExportButtons
+            targetRef={tableRef} // Changed to tableRef
+            fileName={`Monthly_Report_${month}_${year}`}
+          />
         </>
       )}
 
       <ReportCustomerDetailModal
         isOpen={isModalOpen}
-        // onClose={handleCloseModal}
+        onClose={handleCloseModal}
         reportEntry={selectedReportEntry}
       />
     </div>
