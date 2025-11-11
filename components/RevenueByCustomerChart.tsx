@@ -93,7 +93,7 @@ const RevenueByCustomerChart = () => {
                 textAnchor="end"
                 interval={0}
             />
-            <YAxis type="number" tick={{ fill: '#a0aec0' }} tickFormatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact', compactDisplay: 'short' }).format(value)} />
+            <YAxis type="number" tick={{ fill: '#a0aec0' }} tickFormatter={(value) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', notation: 'compact', compactDisplay: 'short' }).format(value)} />
             <Tooltip
             cursor={{ fill: 'rgba(128, 128, 128, 0.1)' }}
             contentStyle={{
