@@ -95,6 +95,7 @@ export default function ProjectFormModal({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <label htmlFor="">ชื่อโครงการ:</label>
           <input
             type="text"
             name="project_name"
@@ -104,48 +105,50 @@ export default function ProjectFormModal({
             required
             className="w-full border px-3 py-2 rounded-lg"
           />
-
-          <select
-            name="customer_id"
-            value={formData.customer_id ? String(formData.customer_id) : ''}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded-lg"
-          >
-            <option value="">เลือกชื่อลูกค้า</option>
-            {customers.map((c) => (
-              <option key={c.id} value={String(c.id)}>
-                {c.customer_name}
-              </option>
-            ))}
-          </select>
-
-          <input
-            type="text"
-            name="sale_name"
-            value={formData.sale_name}
-            onChange={handleChange}
-            placeholder="ชื่อเซลล์ (Sale)"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
-
-          <input
-            type="text"
-            name="pm_name"
-            value={formData.pm_name}
-            onChange={handleChange}
-            placeholder="ชื่อผู้จัดการโครงการ (PM)"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
-
-          <input
-            type="number"
-            name="phase_total"
-            value={formData.phase_total}
-            onChange={handleChange}
-            placeholder="จำนวนเฟสทั้งหมด"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          <div>
+            <label htmlFor="">โครงการนี้เป็นของลูกค้ารายใด :</label>
+            <select
+              name="customer_id"
+              value={formData.customer_id ? String(formData.customer_id) : ''}
+              onChange={handleChange}
+              required
+              className="w-full border px-3 py-2 rounded-lg"
+            >
+              <option value="">เลือกชื่อลูกค้า</option>
+              {customers.map((c) => (
+                <option key={c.id} value={String(c.id)}>
+                  {c.customer_name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div><label htmlFor="">ชื่อพนักงานขายที่ดูแลโครงการนี้:</label>
+            <input
+              type="text"
+              name="sale_name"
+              value={formData.sale_name}
+              onChange={handleChange}
+              placeholder="ชื่อเซลล์ (Sale)"
+              className="w-full border px-3 py-2 rounded-lg"
+            /></div>
+          <div>  <label htmlFor="">ชื่อ Project Manager ที่รับผิดชอบงาน</label>
+            <input
+              type="text"
+              name="pm_name"
+              value={formData.pm_name}
+              onChange={handleChange}
+              placeholder="ชื่อผู้จัดการโครงการ (PM)"
+              className="w-full border px-3 py-2 rounded-lg"
+            /></div>
+          <div>     <label htmlFor="">จำนวนเฟสทั้งหมดของโครงการนี้ :</label>
+            <input
+              type="number"
+              name="phase_total"
+              value={formData.phase_total}
+              onChange={handleChange}
+              placeholder="จำนวนเฟสทั้งหมด"
+              className="w-full border px-3 py-2 rounded-lg"
+            /></div>
 
           <div className="flex gap-4">
             <div className="flex-1">
