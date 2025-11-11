@@ -149,7 +149,7 @@ export default function ReportsPage() {
           </table>
 
           {/* Hidden content for export */}
-          <div ref={exportContentRef} style={{ display: 'none' }}>
+          <div ref={exportContentRef} style={{ position: 'absolute', left: '-9999px', opacity: 0 }}>
             <h2 className="text-xl font-bold mb-4">รายงานประจำเดือน {month} ปี {year}</h2>
             <table className="w-full border text-sm">
               <thead className="bg-gray-100">
