@@ -10,6 +10,8 @@ export default function Sidebar() {
     { path: "/installments", label: "Installments(หน้าการผ่อนชำระ)", icon: <Layers className="w-5 h-5" /> },
     // { path: "/users", label: "Users", icon: <FileText className="w-5 h-5" /> },
     { path: "/notifications", label: "Notifications", icon: <Bell className="w-5 h-5" /> },
+    { path: "/reports", label: "Reports(รายงาน)", icon: <FileText className="w-5 h-5" /> }
+
   ]
 
   return (

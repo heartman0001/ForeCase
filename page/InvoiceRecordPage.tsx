@@ -131,14 +131,15 @@ export default function InvoiceRecordPage() {
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}
           onSubmit={handleAddInvoice}
+          onAdded={loadInvoices} // ✅ เพิ่มตรงนี้
         />
       )}
       {isEditOpen && selectedInvoice && (
         <AddRecordModal
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
-          onSubmit={handleEditInvoice}
-          initialData={selectedInvoice}
+          onAdded={loadInvoices}
+          invoiceId={selectedInvoice.id} // ✅ ส่ง id ไป
         />
       )}
     </div>
