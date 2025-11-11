@@ -123,9 +123,10 @@ export default function ReportsPage() {
           >
             <option value="all">All Statuses</option>
             <option value="Pending">Pending</option>
-            <option value="	draft">	draft</option>
-            <option value="billed	">billed	</option>
-            <option value="billed	">billed	</option>
+            <option value="Billed">Billed</option>
+            <option value="Overdue">Overdue</option>
+            <option value="Paid">Paid</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
       </div>

@@ -420,7 +420,6 @@ export default function AddRecordModal({ isOpen, onClose, onAdded, invoiceId }: 
                 >
                   <option value="">-- Select Status --</option>
                   <option value="Pending">Pending</option>
-                  <option value="Draft">Draft</option>
                   <option value="Billed">Billed</option>
                   <option value="Overdue">Overdue</option>
                   <option value="Paid">Paid</option>
