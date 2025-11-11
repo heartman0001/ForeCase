@@ -69,79 +69,224 @@ export default function AddRecordModal({ isOpen, onClose, onAdded }: AddRecordMo
       <div className="bg-white rounded-xl p-6 w-full max-w-lg shadow-xl">
         <h2 className="text-xl font-semibold mb-4 text-center">เพิ่มรายการ Invoice</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
-          <div>
-            <label className="block text-sm font-medium">Project</label>
-            <select
-              name="project_id"
-              value={formData.project_id}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-              required
-            >
-              <option value="">-- เลือกโครงการ --</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.project_name}
-                </option>
-              ))}
-            </select>
-          </div>
+        
+      {/* Project Info */}
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-sm font-medium">Project Name</label>
+          <input
+            type="text"
+            name="project_name"
+            value={formData.project_name ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Phase</label>
+          <input
+            type="number"
+            name="phase"
+            value={formData.phase ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+      </div>
 
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-sm font-medium">Amount (บาท)</label>
-              <input
-                type="number"
-                name="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium">Has VAT?</label>
-              <input
-                type="checkbox"
-                name="has_vat"
-                checked={formData.has_vat}
-                onChange={handleChange}
-                className="ml-2"
-              />
-            </div>
-          </div>
+      {/* Sale & PM */}
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-sm font-medium">Sale Name</label>
+          <input
+            type="text"
+            name="sale_name"
+            value={formData.sale_name ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">PM Name</label>
+          <input
+            type="text"
+            name="pm_name"
+            value={formData.pm_name ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium">Billing Date</label>
-            <input
-              type="date"
-              name="billing_date"
-              value={formData.billing_date}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
+      {/* Financial */}
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-sm font-medium">Amount (บาท)</label>
+          <input
+            type="number"
+            name="amount"
+            value={formData.amount ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">VAT (%)</label>
+          <input
+            type="number"
+            name="vat_percent"
+            value={formData.vat_percent ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium">Credit Term (Days)</label>
-            <input
-              type="number"
-              name="credit_term_days"
-              value={formData.credit_term_days}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-            />
-          </div>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-sm font-medium">VAT Amount</label>
+          <input
+            type="number"
+            name="vat_amount"
+            value={formData.vat_amount ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">Total with VAT</label>
+          <input
+            type="number"
+            name="total_with_vat"
+            value={formData.total_with_vat ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium">Note</label>
-            <textarea
-              name="note"
-              value={formData.note}
-              onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2"
-            ></textarea>
-          </div>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
+          <label className="block text-sm font-medium">WHT (%)</label>
+          <input
+            type="number"
+            name="wht_percent"
+            value={formData.wht_percent ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium">WHT Amount</label>
+          <input
+            type="number"
+            name="wht_amount"
+            value={formData.wht_amount ?? ""}
+            onChange={handleChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Net Amount</label>
+        <input
+          type="number"
+          name="net_amount"
+          value={formData.net_amount ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Real Received (บาท)</label>
+        <input
+          type="number"
+          name="real_received"
+          value={formData.real_received ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        />
+      </div>
+
+      {/* Billing & Payment */}
+      <div>
+        <label className="block text-sm font-medium">Billing Date</label>
+        <input
+          type="date"
+          name="billing_date"
+          value={formData.billing_date ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Payment Date</label>
+        <input
+          type="date"
+          name="payment_date"
+          value={formData.payment_date ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        />
+      </div>
+
+      {/* Reference & Status */}
+      <div>
+        <label className="block text-sm font-medium">Reference Document</label>
+        <input
+          type="text"
+          name="ref_doc"
+          value={formData.ref_doc ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium">Status</label>
+        <select
+          name="status"
+          value={formData.status ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        >
+          <option value="">-- Select Status --</option>
+          <option value="draft">Draft</option>
+          <option value="billed">Billed</option>
+          <option value="paid">Paid</option>
+          <option value="overdue">Overdue</option>
+        </select>
+      </div>
+
+      {/* Note */}
+      <div>
+        <label className="block text-sm font-medium">Note</label>
+        <textarea
+          name="note"
+          value={formData.note ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        ></textarea>
+      </div>
+
+      {/* Customer */}
+      <div>
+        <label className="block text-sm font-medium">Customer</label>
+        <select
+          name="customer_id"
+          value={formData.customers?.id ?? ""}
+          onChange={handleChange}
+          className="w-full border rounded-lg px-3 py-2"
+        >
+          <option value="">-- Select Customer --</option>
+          {/* map customers from DB */}
+        </select>
+      </div>
+    
 
           <div className="flex justify-end gap-2 mt-4">
             <button

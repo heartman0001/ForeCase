@@ -12,24 +12,38 @@ export default function Sidebar() {
   ]
 
   return (
-    <div className="w-64 bg-[#2826a9] text-white min-h-screen flex flex-col p-4">
-      <h1 className="text-lg font-bold mb-6 text-center">Forecast Cash</h1>
-      <nav className="space-y-2">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/10 ${
-                isActive ? "bg-white/20 font-semibold" : ""
-              }`
-            }
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
-    </div>
+    <div className="w-64 bg-white text-[#2826a9] min-h-screen flex flex-col p-4 shadow-lg">
+  {/* Logo */}
+  <div className="flex items-center justify-center mb-6">
+    <img
+      src="https://www.wewebplus.com/img/static/wewebplus.svg"
+      alt="Logo"
+      className="h-12"
+    />
+  </div>
+
+  {/* Title */}
+  <h1 className="text-lg font-bold mb-6 text-center text-[#2826a9]">
+    Forecast Cash
+  </h1>
+
+  {/* Navigation */}
+  <nav className="space-y-2">
+    {navItems.map((item) => (
+      <NavLink
+        key={item.path}
+        to={item.path}
+        className={({ isActive }) =>
+          `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200
+           ${isActive ? "bg-[#2b71ed] text-white font-semibold" : "hover:bg-[#2826a9]/10"}`
+        }
+      >
+        {item.icon}
+        <span>{item.label}</span>
+      </NavLink>
+    ))}
+  </nav>
+</div>
+
   )
 }
