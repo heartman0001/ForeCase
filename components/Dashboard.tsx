@@ -32,18 +32,19 @@ export default function Dashboard() {
     <div className="p-6 bg-white min-h-screen">
       {/* ✅ Header Section */}
       <div className="mb-10">
-        <div className="bg-white border border-gray-200 rounded-xl shadow-md p-8 text-center">
-          <h1 className="text-4xl font-bold text-[#2826a9] mb-4">
-            📊 Dashboard Overview
-          </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            หน้านี้คือ <span className="font-semibold text-[#2b71ed]">Dashboard</span> 
-            ของระบบ ForeCash ที่สรุปข้อมูลสำคัญทั้งหมดในที่เดียว  
-            คุณสามารถดูจำนวนโครงการ, ลูกค้า, รายได้รวม, ยอดที่ยังไม่ได้เก็บ 
-            และการคาดการณ์ช่วงเวลาเงินเข้า เพื่อช่วยในการวางแผนการเงินและการเก็บเงินได้อย่างมีประสิทธิภาพ
-          </p>
-        </div>
-      </div>
+  <div className="bg-white border border-gray-200 rounded-xl shadow-lg p-10 text-center relative">
+    {/* Gradient Accent Bar */}
+    <div className="absolute top-0 left-0 w-full h-2 rounded-t-xl bg-gradient-to-r from-[#2826a9] via-[#2b71ed] to-[#2826a9]" />
+
+    {/* Title */}
+    <h1 className="text-4xl font-bold text-[#2826a9] mb-3">
+      Dashboard Overview
+    </h1>
+
+   
+  </div>
+</div>
+
 
       {/* ✅ Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">

@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from 'react'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { getInstallments } from '../services/installmentService'
 import { Installment } from '../types'
 
@@ -37,7 +36,7 @@ const RevenueByProjectChart = () => {
           name,
           revenue: data.revenue,
           count: data.count,
-        })).sort((a, b) => b.revenue - a.revenue); // Sort by revenue descending
+        })).sort((a, b) => b.revenue - a.revenue)
 
         setChartData(formattedData)
       } catch (err) {
@@ -60,46 +59,57 @@ const RevenueByProjectChart = () => {
   }
 
   return (
-    <div className="bg-gray-800 p-4 rounded-lg shadow-lg h-full flex flex-col">
-        <h2 className="text-xl font-semibold text-white mb-4">Revenue by Project</h2>
-        <ResponsiveContainer width="100%" height={300}>
+    <div className="bg-white p-6 rounded-xl shadow-md h-full flex flex-col">
+      <h2 className="text-xl font-semibold text-[#2826a9] mb-4">Revenue by Project</h2>
+      <ResponsiveContainer width="100%" height={300}>
         <BarChart
-            data={chartData}
-            margin={{ top: 5, right: 30, left: 20, bottom: 100 }}
+          data={chartData}
+          margin={{ top: 5, right: 30, left: 20, bottom: 100 }}
         >
-            <defs>
-                <linearGradient id="colorRevenueProject" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#38a169" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#38a169" stopOpacity={0.1}/>
-                </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="rgba(128, 128, 128, 0.2)" />
-            <XAxis 
-                type="category" 
-                dataKey="name" 
-                tick={{ fill: '#a0aec0' }} 
-                angle={-45}
-                textAnchor="end"
-                interval={0}
-            />
-            <YAxis type="number" tick={{ fill: '#a0aec0' }} tickFormatter={(value) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', notation: 'compact', compactDisplay: 'short' }).format(value)} />
-            <Tooltip
-            cursor={{ fill: 'rgba(128, 128, 128, 0.1)' }}
+          <defs>
+            <linearGradient id="colorRevenueProject" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#2b71ed" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#2826a9" stopOpacity={0.3}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(40, 38, 169, 0.1)" />
+          <XAxis 
+            type="category" 
+            dataKey="name" 
+            tick={{ fill: '#4a5568' }} 
+            angle={-45}
+            textAnchor="end"
+            interval={0}
+          />
+          <YAxis 
+            type="number" 
+            tick={{ fill: '#4a5568' }} 
+            tickFormatter={(value) => 
+              new Intl.NumberFormat('th-TH', { 
+                style: 'currency', 
+                currency: 'THB', 
+                notation: 'compact', 
+                compactDisplay: 'short' 
+              }).format(value)
+            } 
+          />
+          <Tooltip
+            cursor={{ fill: 'rgba(43, 113, 237, 0.05)' }}
             contentStyle={{
-                backgroundColor: '#2d3748',
-                borderColor: '#4a5568',
-                color: '#e2e8f0',
+              backgroundColor: '#f8fafc',
+              borderColor: '#2b71ed',
+              color: '#1a202c',
             }}
             formatter={(value: number, name: string, entry: any) => {
-                const { count } = entry.payload;
-                const formattedRevenue = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(value);
-                return [`${formattedRevenue} (${count} installments)`, 'Revenue'];
+              const { count } = entry.payload;
+              const formattedRevenue = new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(value);
+              return [`${formattedRevenue} (${count} installments)`, 'Revenue'];
             }}
-            />
-            <Legend />
-            <Bar dataKey="revenue" fill="url(#colorRevenueProject)" radius={[4, 4, 0, 0]} />
+          />
+          <Legend />
+          <Bar dataKey="revenue" fill="url(#colorRevenueProject)" radius={[6, 6, 0, 0]} />
         </BarChart>
-        </ResponsiveContainer>
+      </ResponsiveContainer>
     </div>
   )
 }
