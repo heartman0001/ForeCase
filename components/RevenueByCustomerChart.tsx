@@ -8,6 +8,7 @@ import { Installment, Project } from '../types'
 interface ChartData {
   name: string
   revenue: number
+  count: number
 }
 
 const RevenueByCustomerChart = () => {
@@ -36,15 +37,17 @@ const RevenueByCustomerChart = () => {
           const amount = installment.amount || 0
           
           if (!acc[customerName]) {
-            acc[customerName] = 0
+            acc[customerName] = { revenue: 0, count: 0 };
           }
-          acc[customerName] += amount
-          return acc
-        }, {} as Record<string, number>)
+          acc[customerName].revenue += amount;
+          acc[customerName].count += 1;
+          return acc;
+        }, {} as Record<string, { revenue: number; count: number }>)
 
-        const formattedData = Object.entries(revenueByCustomer).map(([name, revenue]) => ({
+        const formattedData = Object.entries(revenueByCustomer).map(([name, data]) => ({
           name,
-          revenue,
+          revenue: data.revenue,
+          count: data.count,
         })).sort((a, b) => b.revenue - a.revenue); // Sort by revenue descending
 
         setChartData(formattedData)
@@ -98,7 +101,11 @@ const RevenueByCustomerChart = () => {
                 borderColor: '#4a5568',
                 color: '#e2e8f0',
             }}
-            formatter={(value: number) => [new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value), 'Revenue']}
+            formatter={(value: number, name: string, entry: any) => {
+                const { count } = entry.payload;
+                const formattedRevenue = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+                return [`${formattedRevenue} (${count} installments)`, 'Revenue'];
+            }}
             />
             <Legend />
             <Bar dataKey="revenue" fill="url(#colorRevenueCustomer)" radius={[4, 4, 0, 0]} />
