@@ -7,13 +7,16 @@ import {
 } from "../services/invoiceService"
 import { InvoiceRecord } from "../types"
 import AddRecordModal from "../components/AddRecordModal"
-
+import { Edit } from "lucide-react"
 export default function InvoiceRecordPage() {
   const [invoices, setInvoices] = useState<InvoiceRecord[]>([])
   const [loading, setLoading] = useState(true)
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null)
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 5
 
   useEffect(() => {
     loadInvoices()
@@ -63,65 +66,105 @@ export default function InvoiceRecordPage() {
     }
   }
 
+  // ✅ Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentInvoices = invoices.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(invoices.length / itemsPerPage)
+
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-4">📊 รายการ Invoice</h1>
 
-        <button
-          onClick={() => setIsAddOpen(true)}
-          className="mb-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-        >
-          ➕ เพิ่ม Invoice
-        </button>
+        {/* Action Bar */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          {/* Search Box */}
+          <input
+            type="text"
+            placeholder="🔍 ค้นหา Invoice..."
+            className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
+          />
+
+          {/* Add Button */}
+          <button
+            onClick={() => setIsAddOpen(true)}
+            className="bg-[#2b71ed] text-white px-4 py-2 rounded-lg hover:bg-[#2826a9] transition"
+          >
+            ➕ เพิ่ม Invoice
+          </button>
+        </div>
 
         {loading ? (
           <p>กำลังโหลดข้อมูล...</p>
         ) : invoices.length === 0 ? (
           <p>ไม่มีข้อมูล</p>
         ) : (
-          <table className="w-full border text-sm">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="p-2 border">Project</th>
-                <th className="p-2 border">Customer</th>
-                <th className="p-2 border">Amount</th>
-                <th className="p-2 border">Billing Date</th>
-                <th className="p-2 border">Status</th>
-                <th className="p-2 border">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoices.map((inv) => (
-                <tr key={inv.id} className="text-center hover:bg-gray-50">
-                  <td className="border p-2">{inv.projects?.project_name || "-"}</td>
-                  <td className="border p-2">{inv.customers?.customer_name || "-"}</td>
-                  <td className="border p-2">
-                    {Number(inv.amount || 0).toLocaleString()}
-                  </td>
-                  <td className="border p-2">{inv.billing_date || "-"}</td>
-                  <td className="border p-2">{inv.status || "Pending"}</td>
-                  <td className="border p-2 space-x-2">
-                    <button
-                      onClick={() => {
-                        setSelectedInvoice(inv)
-                        setIsEditOpen(true)
-                      }}
-                      className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
-                    >
-                      ✏️ แก้ไข
-                    </button>
-                    <button
-                      onClick={() => handleDelete(inv.id)}
-                      className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
-                    >
-                      🗑️ ลบ
-                    </button>
-                  </td>
+          <>
+            <table className="w-full border text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2 border">Project</th>
+                  <th className="p-2 border">Customer</th>
+                  <th className="p-2 border">Amount</th>
+                  <th className="p-2 border">Billing Date</th>
+                  <th className="p-2 border">Status</th>
+                  <th className="p-2 border">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {currentInvoices.map((inv) => (
+                  <tr key={inv.id} className="text-center hover:bg-gray-50">
+                    <td className="border p-2">{inv.projects?.project_name || "-"}</td>
+                    <td className="border p-2">{inv.customers?.customer_name || "-"}</td>
+                    <td className="border p-2">
+                      {Number(inv.amount || 0).toLocaleString()}
+                    </td>
+                    <td className="border p-2">{inv.billing_date || "-"}</td>
+                    <td className="border p-2">{inv.status || "Pending"}</td>
+                    <td className="border p-2 space-x-2">
+                      <button
+                        onClick={() => {
+                          setSelectedInvoice(inv)
+                          setIsEditOpen(true)
+                        }}
+                        className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+                      >
+                        ✏️ แก้ไข
+                      </button>
+                      <button
+                        onClick={() => handleDelete(inv.id)}
+                        className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+                      >
+                        🗑️ ลบ
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* ✅ Pagination Controls */}
+            <div className="flex justify-center items-center gap-2 mt-4">
+              <button
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((prev) => prev - 1)}
+                className="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+              >
+                ◀ ก่อนหน้า
+              </button>
+              <span>
+                หน้า {currentPage} จาก {totalPages}
+              </span>
+              <button
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((prev) => prev + 1)}
+                className="px-3 py-1 rounded-lg border border-gray-300 hover:bg-gray-100 disabled:opacity-50"
+              >
+                ถัดไป ▶
+              </button>
+            </div>
+          </>
         )}
       </div>
 
@@ -131,7 +174,7 @@ export default function InvoiceRecordPage() {
           isOpen={isAddOpen}
           onClose={() => setIsAddOpen(false)}
           onSubmit={handleAddInvoice}
-          onAdded={loadInvoices} // ✅ เพิ่มตรงนี้
+          onAdded={loadInvoices}
         />
       )}
       {isEditOpen && selectedInvoice && (
@@ -139,7 +182,7 @@ export default function InvoiceRecordPage() {
           isOpen={isEditOpen}
           onClose={() => setIsEditOpen(false)}
           onAdded={loadInvoices}
-          invoiceId={selectedInvoice.id} // ✅ ส่ง id ไป
+          invoiceId={selectedInvoice.id}
         />
       )}
     </div>
