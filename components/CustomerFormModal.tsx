@@ -54,59 +54,73 @@ export default function CustomerFormModal({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="customer_name"
-            value={formData.customer_name}
-            onChange={handleChange}
-            placeholder="ชื่อลูกค้า"
-            required
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          <div>
+            <label htmlFor="">ชื่อลูกค้า (ชื่อองค์กรหลัก)</label>
+            <input
+              type="text"
+              name="customer_name"
+              value={formData.customer_name}
+              onChange={handleChange}
+              placeholder="ชื่อลูกค้า"
+              required
+              className="w-full border px-3 py-2 rounded-lg"
+            />
+          </div>
+          <div>     <label htmlFor="">ชื่อทางการ</label>
+            <input
+              type="text"
+              name="company_name"
+              value={formData.company_name || ''}
+              onChange={handleChange}
+              placeholder="ชื่อบริษัท (ถ้ามี)"
+              className="w-full border px-3 py-2 rounded-lg"
+            /></div>
 
-          <input
-            type="text"
-            name="company_name"
-            value={formData.company_name || ''}
-            onChange={handleChange}
-            placeholder="ชื่อบริษัท (ถ้ามี)"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          <div>
+            <label htmlFor="">ชื่อผู้ติดต่อหลักของลูกค้า</label>
+            <input
+              type="text"
+              name="contact_name"
+              value={formData.contact_name || ''}
+              onChange={handleChange}
+              placeholder="ผู้ติดต่อ"
+              className="w-full border px-3 py-2 rounded-lg"
+            />
+          </div>
+          <div>
+            <label htmlFor="">อีเมลติดต่อของลูกค้า</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email || ''}
+              onChange={handleChange}
+              placeholder="อีเมล"
+              className="w-full border px-3 py-2 rounded-lg"
+            />
 
-          <input
-            type="text"
-            name="contact_name"
-            value={formData.contact_name || ''}
-            onChange={handleChange}
-            placeholder="ผู้ติดต่อ"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          </div>
 
-          <input
-            type="email"
-            name="email"
-            value={formData.email || ''}
-            onChange={handleChange}
-            placeholder="อีเมล"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
-
-          <input
-            type="text"
-            name="phone"
-            value={formData.phone || ''}
-            onChange={handleChange}
-            placeholder="เบอร์โทรศัพท์"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
-
-          <textarea
-            name="address"
-            value={formData.address || ''}
-            onChange={handleChange}
-            placeholder="ที่อยู่"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          <data value="">
+            <label htmlFor="">เบอร์โทรศัพท์ติดต่อ :</label>
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone || ''}
+              onChange={handleChange}
+              placeholder="เบอร์โทรศัพท์"
+              className="w-full border px-3 py-2 rounded-lg"
+            />
+          </data>
+          <div>
+            <label htmlFor="">ที่อยู่บริษัทลูกค้า (ใช้ในใบวางบิล/ใบเสร็จ) :</label>
+            <textarea
+              name="address"
+              value={formData.address || ''}
+              onChange={handleChange}
+              placeholder="ที่อยู่"
+              className="w-full border px-3 py-2 rounded-lg"
+            />
+          </div>
 
           <div className="flex gap-4">
             <div className="flex-1">
@@ -139,7 +153,7 @@ export default function CustomerFormModal({
               checked={formData.vat_registered}
               onChange={handleChange}
             />
-            มี VAT
+            มี VAT (ลูกค้าจดทะเบียน VAT หรือไม่)
           </label>
 
           <div className="flex justify-end gap-2 mt-4">

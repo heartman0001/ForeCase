@@ -25,7 +25,7 @@ export async function updateInstallment(id: number, data: Partial<Installment>) 
     .from('installments')
     .update(data)
     .eq('id', id)
-    .select()
+    .select('*') // เปลี่ยนจาก .select('*, projects(id, project_name)') เป็น .select('*')
   if (error) throw error
   return updated[0]
 }

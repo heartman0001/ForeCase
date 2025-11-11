@@ -54,11 +54,19 @@ export default function InstallmentFormModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await onSubmit({
-      ...formData,
+    // สร้าง payload เฉพาะฟิลด์ที่ schema รับ ไม่ส่ง projects
+    const payload = {
       project_id: Number(formData.project_id),
+      installment_no: Number(formData.installment_no),
+      installment_total: Number(formData.installment_total),
       amount: Number(formData.amount),
-    })
+      billing_date: formData.billing_date || '',
+      expected_payment_date: formData.expected_payment_date || '',
+      actual_payment_date: formData.actual_payment_date || '',
+      status: formData.status || 'Pending',
+      note: formData.note || '',
+    }
+    await onSubmit(payload)
     onClose()
   }
 
@@ -70,22 +78,24 @@ export default function InstallmentFormModal({
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <select
-            name="project_id"
-            value={formData.project_id}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded-lg"
-          >
-            <option value="">เลือกโครงการ</option>
-            {projects.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.project_name}
-              </option>
-            ))}
-          </select>
+          <div>     <label htmlFor="">ระบุว่างวดนี้เป็นของโครงการใด</label>
+            <select
+              name="project_id"
+              value={formData.project_id}
+              onChange={handleChange}
+              required
+              className="w-full border px-3 py-2 rounded-lg"
+            >
+              <option value="">เลือกโครงการ</option>
+              {projects.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.project_name}
+                </option>
+              ))}
+            </select></div>
 
           <div className="grid grid-cols-2 gap-4">
+            <label htmlFor="">งวดที่เท่าไร เช่น งวดที่ 1, 2, 3 :</label>
             <input
               type="number"
               name="installment_no"
@@ -95,6 +105,7 @@ export default function InstallmentFormModal({
               className="border px-3 py-2 rounded-lg"
               required
             />
+            <label htmlFor="">จำนวนงวดทั้งหมดของโครงการนั้น เช่น 3 งวด, 6 งวด :</label>
             <input
               type="number"
               name="installment_total"
@@ -105,16 +116,18 @@ export default function InstallmentFormModal({
               required
             />
           </div>
-
-          <input
-            type="number"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            placeholder="จำนวนเงิน"
-            className="w-full border px-3 py-2 rounded-lg"
-            required
-          />
+          <div>
+            <label htmlFor="">จำนวนเงินของงวดนั้น (ก่อนหัก VAT/WHT) : </label>
+            <input
+              type="number"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              placeholder="จำนวนเงิน"
+              className="w-full border px-3 py-2 rounded-lg"
+              required
+            />
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -149,25 +162,27 @@ export default function InstallmentFormModal({
               className="w-full border px-3 py-2 rounded-lg"
             />
           </div>
-
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded-lg"
-          >
-            <option value="Pending">Pending</option>
-            <option value="Paid">Paid</option>
-            <option value="Overdue">Overdue</option>
-          </select>
-
-          <textarea
-            name="note"
-            value={formData.note || ''}
-            onChange={handleChange}
-            placeholder="หมายเหตุ"
-            className="w-full border px-3 py-2 rounded-lg"
-          />
+          <div>
+            <label htmlFor="">สถานะงวด:</label>
+            <select
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded-lg"
+            >
+              <option value="Pending">Pending</option>
+              <option value="Paid">Paid</option>
+              <option value="Overdue">Overdue</option>
+            </select>
+          </div>
+          <div>     <label htmlFor="">หมายเหตุ :</label>
+            <textarea
+              name="note"
+              value={formData.note || ''}
+              onChange={handleChange}
+              placeholder="หมายเหตุ"
+              className="w-full border px-3 py-2 rounded-lg"
+            /></div>
 
           <div className="flex justify-end gap-2 mt-4">
             <button

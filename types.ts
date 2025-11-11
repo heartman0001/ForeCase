@@ -2,13 +2,18 @@
 
 /** ตารางลูกค้า (customers) */
 export interface Customer {
-  id: number
+  id?: number
   customer_name: string
+  company_name?: string
   contact_name?: string
+  email?: string
   phone?: string
+  address?: string
   credit_term_days?: number
+  a_date?: string
   vat_registered?: boolean
-  // เพิ่มฟิลด์อื่น ๆ ตาม DB ถ้ามี
+  created_at?: string
+  updated_at?: string
 }
 
 
@@ -42,8 +47,13 @@ export interface Installment {
   note?: string
   created_at?: string
   updated_at?: string
-  customers?: Customer | null
-  projects?: Project | null
+
+  // เฉพาะเวลาคุณ select join เท่านั้น (เช่นใน getInstallments)
+  projects?: {
+    id: number
+    project_name: string
+    // เพิ่มฟิลด์อื่นถ้าคุณ select มา
+  } | null
 }
 
 /** ตารางหลัก (invoice_records) */
