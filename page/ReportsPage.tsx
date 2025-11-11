@@ -1,39 +1,58 @@
-import React, { useEffect, useState, useRef } from 'react' // Import useRef
-import { getMonthlyReport } from '../services/reportService'
+import React, { useEffect, useState, useRef, useCallback } from 'react' // Import useRef, useCallback
+import { getFilteredReports } from '../services/reportService' // Updated import
 import ReportCustomerDetailModal from '../components/ReportCustomerDetailModal'
-import ExportButtons from '../components/ExportButtons' // Import ExportButtons
+import ExportButtons from '../components/ExportButtons'
 
 export default function ReportsPage() {
   const [report, setReport] = useState<any[]>([])
-  const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
-  const [year, setYear] = useState<number>(new Date().getFullYear())
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedReportEntry, setSelectedReportEntry] = useState<any | null>(null)
 
-  const tableRef = useRef<HTMLTableElement>(null) // Create a ref for the table
+  const tableRef = useRef<HTMLTableElement>(null)
+
+  // ✅ New Filter States
+  const [selectedDateFilter, setSelectedDateFilter] = useState<'today' | 'month' | 'year' | 'none'>('month')
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>('all') // 'all', 'รอดำเนินการ', 'สำเร็จ', 'ยกเลิก'
 
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 
-  useEffect(() => {
-    loadReport()
-  }, [month, year])
-
-  async function loadReport() {
+  const loadReport = useCallback(async () => {
     setLoading(true)
     try {
-      const data = await getMonthlyReport(month, year)
+      let startDate: string | null = null
+      let endDate: string | null = null
+      const today = new Date()
+      const currentYear = today.getFullYear()
+      const currentMonth = today.getMonth() + 1 // getMonth() is 0-based
+
+      if (selectedDateFilter === 'today') {
+        startDate = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`
+        endDate = startDate
+      } else if (selectedDateFilter === 'month') {
+        const lastDay = new Date(currentYear, currentMonth, 0).getDate()
+        startDate = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-01`
+        endDate = `${currentYear}-${currentMonth.toString().padStart(2, '0')}-${lastDay.toString().padStart(2, '0')}`
+      } else if (selectedDateFilter === 'year') {
+        startDate = `${currentYear}-01-01`
+        endDate = `${currentYear}-12-31`
+      }
+
+      const data = await getFilteredReports(startDate, endDate, selectedStatusFilter)
       setReport(data)
     } catch (err) {
       console.error('Error loading report:', err)
     } finally {
       setLoading(false)
     }
-  }
+  }, [selectedDateFilter, selectedStatusFilter]) // Dependencies for useCallback
 
+  useEffect(() => {
+    loadReport()
+  }, [loadReport]) // Dependency for useEffect
 
   const handleRowClick = (entry: any) => {
     setSelectedReportEntry(entry)
@@ -61,56 +80,70 @@ export default function ReportsPage() {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow">
-      <h1 className="text-2xl font-bold mb-4">📅 รายงานรายเดือน</h1>
+      <h1 className="text-2xl font-bold mb-4">📅 รายงาน</h1> {/* Changed title */}
 
 
       {/* Filters */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
         <div className="flex gap-2">
-          <select
-            value={month}
-            onChange={(e) => setMonth(Number(e.target.value))}
-            className="border p-2 rounded"
-          >
-            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
-              <option key={m} value={m}>เดือน {m}</option>
-            ))}
-          </select>
-
-          <input
-            type="number"
-            value={year}
-            onChange={(e) => setYear(Number(e.target.value))}
-            className="border p-2 rounded w-24"
-          />
+          {/* Date Filter Buttons */}
           <button
-            onClick={loadReport}
-            className="bg-[#2b71ed] text-white px-4 py-2 rounded hover:bg-[#2826a9] transition"
+            onClick={() => setSelectedDateFilter('today')}
+            className={`px-4 py-2 rounded ${selectedDateFilter === 'today' ? 'bg-[#2b71ed] text-white' : 'bg-gray-200'}`}
           >
-            ดูรายงาน
+            วันนี้
+          </button>
+          <button
+            onClick={() => setSelectedDateFilter('month')}
+            className={`px-4 py-2 rounded ${selectedDateFilter === 'month' ? 'bg-[#2b71ed] text-white' : 'bg-gray-200'}`}
+          >
+            เดือนนี้
+          </button>
+          <button
+            onClick={() => setSelectedDateFilter('year')}
+            className={`px-4 py-2 rounded ${selectedDateFilter === 'year' ? 'bg-[#2b71ed] text-white' : 'bg-gray-200'}`}
+          >
+            ปีนี้
           </button>
         </div>
 
-        {/* Search Box */}
-        <input
-          type="text"
-          placeholder="🔍 ค้นหารายงาน..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
-        />
+        {/* Search Box and Status Filter */}
+        <div className="flex gap-2 w-full md:w-2/3">
+          <input
+            type="text"
+            placeholder="🔍 ค้นหารายงาน..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
+          />
+          <select
+            value={selectedStatusFilter}
+            onChange={(e) => setSelectedStatusFilter(e.target.value)}
+            className="border p-2 rounded"
+          >
+            <option value="all">สถานะทั้งหมด</option>
+            <option value="รอดำเนินการ">รอดำเนินการ</option>
+            <option value="สำเร็จ">สำเร็จ</option>
+            <option value="ยกเลิก">ยกเลิก</option>
+          </select>
+        </div>
       </div>
 
       {loading ? (
         <p>กำลังโหลด...</p>
       ) : filteredReport.length === 0 ? (
-        <p>ไม่มีข้อมูลในเดือนนี้</p>
+        <p>ไม่มีข้อมูล</p>
       ) : (
         <>
           <div ref={tableRef} className="w-full">
-            <h2 className="text-xl font-bold mb-2">รายงานรายเดือน</h2>
-            <p className="mb-1">ปี: {year}</p>
-            <p className="mb-4">เดือน: {month}</p>
+            <h2 className="text-xl font-bold mb-2">รายงาน</h2> {/* Changed title */}
+            <p className="mb-1">
+              {selectedDateFilter === 'today' && `วันที่: ${new Date().toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' })}`}
+              {selectedDateFilter === 'month' && `เดือน: ${new Date().toLocaleDateString('th-TH', { month: 'long', year: 'numeric' })}`}
+              {selectedDateFilter === 'year' && `ปี: ${new Date().toLocaleDateString('th-TH', { year: 'numeric' })}`}
+              {selectedDateFilter === 'none' && `ทั้งหมด`}
+            </p>
+            {selectedStatusFilter !== 'all' && <p className="mb-4">สถานะ: {selectedStatusFilter}</p>}
             <table className="w-full border text-sm">
               <thead className="bg-gray-100">
                 <tr>
@@ -171,8 +204,8 @@ export default function ReportsPage() {
             </button>
           </div>
           <ExportButtons
-            targetRef={tableRef} // Changed to tableRef
-            fileName={`Monthly_Report_${month}_${year}`}
+            targetRef={tableRef}
+            fileName={`Report_${selectedDateFilter}_${selectedStatusFilter}`}
           />
         </>
       )}
@@ -185,3 +218,4 @@ export default function ReportsPage() {
     </div>
   )
 }
+
