@@ -4,10 +4,16 @@
 export interface Customer {
   id: number
   customer_name: string
+  company_name?: string // เพิ่มเข้ามา
   contact_name?: string
+  email?: string // เพิ่มเข้ามา
   phone?: string
+  address?: string // เพิ่มเข้ามา
   credit_term_days?: number
+  a_date?: string // เพิ่มเข้ามา
   vat_registered?: boolean
+  created_at?: string // เพิ่มเข้ามา
+  updated_at?: string // เพิ่มเข้ามา
   // เพิ่มฟิลด์อื่น ๆ ตาม DB ถ้ามี
 }
 
@@ -123,5 +129,5 @@ export interface Notification {
     billing_date: string
     payment_date: string
     status: string
-  }
+  }[] // เปลี่ยนเป็น array
 }

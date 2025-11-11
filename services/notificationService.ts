@@ -13,6 +13,7 @@ export async function getNotifications(userId?: string) {
       due_date,
       is_read,
       created_at,
+      user_id,
       invoice_id,
       invoice_records (id, project_id, billing_date, payment_date, status)
     `
