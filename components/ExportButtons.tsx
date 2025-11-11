@@ -20,7 +20,7 @@ export default function ExportButtons({ targetRef, fileName }: ExportButtonsProp
 
     try {
       const opt = {
-        margin:       0.5, // Adjusted margin for better fit
+        margin:       0.75, // Adjusted margin for better fit
         filename:     `${fileName}.${format}`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true }, // useCORS for images from other domains
