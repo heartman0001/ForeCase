@@ -121,10 +121,11 @@ export default function ReportsPage() {
             onChange={(e) => setSelectedStatusFilter(e.target.value)}
             className="border p-2 rounded"
           >
-            <option value="all">สถานะทั้งหมด</option>
-            <option value="รอดำเนินการ">รอดำเนินการ</option>
-            <option value="สำเร็จ">สำเร็จ</option>
-            <option value="ยกเลิก">ยกเลิก</option>
+            <option value="all">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="	draft">	draft</option>
+            <option value="billed	">billed	</option>
+            <option value="billed	">billed	</option>
           </select>
         </div>
       </div>
