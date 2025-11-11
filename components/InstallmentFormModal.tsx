@@ -72,135 +72,54 @@ export default function InstallmentFormModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">
-          {initialData ? 'แก้ไขงวดการชำระเงิน' : 'เพิ่มงวดการชำระเงิน'}
-        </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>     <label htmlFor="">ระบุว่างวดนี้เป็นของโครงการใด</label>
-            <select
-              name="project_id"
-              value={formData.project_id}
-              onChange={handleChange}
-              required
-              className="w-full border px-3 py-2 rounded-lg"
-            >
-              <option value="">เลือกโครงการ</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.project_name}
-                </option>
-              ))}
-            </select></div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <label htmlFor="">งวดที่เท่าไร เช่น งวดที่ 1, 2, 3 :</label>
-            <input
-              type="number"
-              name="installment_no"
-              value={formData.installment_no}
-              onChange={handleChange}
-              placeholder="งวดที่"
-              className="border px-3 py-2 rounded-lg"
-              required
-            />
-            <label htmlFor="">จำนวนงวดทั้งหมดของโครงการนั้น เช่น 3 งวด, 6 งวด :</label>
-            <input
-              type="number"
-              name="installment_total"
-              value={formData.installment_total}
-              onChange={handleChange}
-              placeholder="จำนวนงวดทั้งหมด"
-              className="border px-3 py-2 rounded-lg"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="">จำนวนเงินของงวดนั้น (ก่อนหัก VAT/WHT) : </label>
-            <input
-              type="number"
-              name="amount"
-              value={formData.amount}
-              onChange={handleChange}
-              placeholder="จำนวนเงิน"
-              className="w-full border px-3 py-2 rounded-lg"
-              required
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm">วันที่วางบิล</label>
-              <input
-                type="date"
-                name="billing_date"
-                value={formData.billing_date || ''}
-                onChange={handleChange}
-                className="w-full border px-3 py-2 rounded-lg"
-              />
-            </div>
-            <div>
-              <label className="text-sm">คาดว่าจะได้รับเงิน</label>
-              <input
-                type="date"
-                name="expected_payment_date"
-                value={formData.expected_payment_date || ''}
-                onChange={handleChange}
-                className="w-full border px-3 py-2 rounded-lg"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="text-sm">วันที่รับจริง</label>
-            <input
-              type="date"
-              name="actual_payment_date"
-              value={formData.actual_payment_date || ''}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-lg"
-            />
-          </div>
-          <div>
-            <label htmlFor="">สถานะงวด:</label>
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              className="w-full border px-3 py-2 rounded-lg"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Paid">Paid</option>
-              <option value="Overdue">Overdue</option>
-            </select>
-          </div>
-          <div>     <label htmlFor="">หมายเหตุ :</label>
-            <textarea
-              name="note"
-              value={formData.note || ''}
-              onChange={handleChange}
-              placeholder="หมายเหตุ"
-              className="w-full border px-3 py-2 rounded-lg"
-            /></div>
-
-          <div className="flex justify-end gap-2 mt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
-            >
-              ยกเลิก
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
-            >
-              บันทึก
-            </button>
-          </div>
-        </form>
+      {/* Status */}
+      <div>
+        <label>สถานะงวด:</label>
+        <select
+          name="status"
+          value={formData.status}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded-lg"
+        >
+          <option value="Pending">Pending</option>
+          <option value="Paid">Paid</option>
+          <option value="Overdue">Overdue</option>
+        </select>
       </div>
-    </div>
+
+      {/* Note */}
+      <div>
+        <label>หมายเหตุ :</label>
+        <textarea
+          name="note"
+          value={formData.note || ""}
+          onChange={handleChange}
+          placeholder="หมายเหตุ"
+          className="w-full border px-3 py-2 rounded-lg"
+        />
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          type="button"
+          onClick={onClose}
+          className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
+        >
+          ยกเลิก
+        </button>
+        <button
+          type="submit"
+          className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700"
+        >
+          บันทึก
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
   )
 }
