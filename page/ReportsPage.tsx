@@ -12,6 +12,7 @@ export default function ReportsPage() {
   const [selectedReportEntry, setSelectedReportEntry] = useState<any | null>(null)
 
   const tableRef = useRef<HTMLTableElement>(null) // Create a ref for the table
+  const exportContentRef = useRef<HTMLDivElement>(null) // New ref for export content
 
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
@@ -100,7 +101,7 @@ export default function ReportsPage() {
           className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
         />
         <ExportButtons
-          targetRef={tableRef}
+          targetRef={exportContentRef} // Changed to exportContentRef
           fileName={`Monthly_Report_${month}_${year}`}
         />
       </div>
@@ -146,6 +147,37 @@ export default function ReportsPage() {
               ))}
             </tbody>
           </table>
+
+          {/* Hidden content for export */}
+          <div ref={exportContentRef} style={{ display: 'none' }}>
+            <h2 className="text-xl font-bold mb-4">รายงานประจำเดือน {month} ปี {year}</h2>
+            <table className="w-full border text-sm">
+              <thead className="bg-gray-100">
+                <tr>
+                  <th className="p-2 border">ลูกค้า</th>
+                  <th className="p-2 border">โปรเจกต์</th>
+                  <th className="p-2 border">ยอดวางบิล</th>
+                  <th className="p-2 border">วันที่วางบิล</th>
+                  <th className="p-2 border">เครดิตเทอม</th>
+                  <th className="p-2 border">คาดว่าเงินเข้า</th>
+                  <th className="p-2 border">สถานะ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredReport.map((r) => ( // Use filteredReport to export all filtered data, not just current page
+                  <tr key={r.id} className="hover:bg-gray-50">
+                    <td className="p-2 border">{r.customer_name}</td>
+                    <td className="p-2 border">{r.project_name}</td>
+                    <td className="p-2 border text-right">{r.amount?.toLocaleString()}</td>
+                    <td className="p-2 border">{r.billing_date}</td>
+                    <td className="p-2 border text-center">{r.credit_term_days || '-'}</td>
+                    <td className="p-2 border text-blue-600">{r.expected_payment_date}</td>
+                    <td className="p-2 border">{r.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {/* ✅ Pagination Controls */}
           <div className="flex justify-center items-center gap-2 mt-4">
