@@ -76,7 +76,10 @@ export default function EditInvoiceModal({ isOpen, onClose, invoiceId, onUpdated
                             className="w-full border rounded-lg px-3 py-2"
                         >
                             <option value="Pending">Pending</option>
-                            <option value="Collected">Collected</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Billed">Billed</option>
+                            <option value="Overdue">Overdue</option>
+                            <option value="Paid">Paid</option>
                             <option value="Cancelled">Cancelled</option>
                         </select>
                     </div>
