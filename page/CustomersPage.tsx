@@ -19,6 +19,9 @@ export default function CustomersPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
 
+  // ✅ Search state
+  const [searchTerm, setSearchTerm] = useState("")
+
   useEffect(() => {
     loadCustomers()
   }, [])
@@ -54,21 +57,34 @@ export default function CustomersPage() {
     }
   }
 
-  // ✅ Pagination logic
+  // ✅ Filter customers by search term
+  const filteredCustomers = customers.filter(
+    (c) =>
+      c.customer_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.contact_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.phone?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  // ✅ Pagination logic (ใช้ filteredCustomers แทน customers)
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentCustomers = customers.slice(indexOfFirstItem, indexOfLastItem)
-  const totalPages = Math.ceil(customers.length / itemsPerPage)
+  const currentCustomers = filteredCustomers.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow-md">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <h1 className="text-2xl font-bold">จัดการข้อมูลลูกค้า</h1>
           {/* Search Box */}
           <input
             type="text"
             placeholder="🔍 ค้นหาข้อมูลลูกค้า"
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+              setCurrentPage(1) // ✅ รีเซ็ตไปหน้าแรกเมื่อค้นหาใหม่
+            }}
             className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
           />
           <button
@@ -84,8 +100,8 @@ export default function CustomersPage() {
 
         {loading ? (
           <p>กำลังโหลดข้อมูล...</p>
-        ) : customers.length === 0 ? (
-          <p>ยังไม่มีข้อมูลลูกค้า</p>
+        ) : filteredCustomers.length === 0 ? (
+          <p>ไม่พบข้อมูลลูกค้า</p>
         ) : (
           <>
             <table className="w-full border">

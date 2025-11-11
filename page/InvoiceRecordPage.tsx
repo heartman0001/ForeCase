@@ -8,6 +8,7 @@ import {
 import { InvoiceRecord } from "../types"
 import AddRecordModal from "../components/AddRecordModal"
 import { Edit } from "lucide-react"
+
 export default function InvoiceRecordPage() {
   const [invoices, setInvoices] = useState<InvoiceRecord[]>([])
   const [loading, setLoading] = useState(true)
@@ -17,6 +18,9 @@ export default function InvoiceRecordPage() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
+
+  // ✅ Search state
+  const [searchTerm, setSearchTerm] = useState("")
 
   useEffect(() => {
     loadInvoices()
@@ -66,11 +70,19 @@ export default function InvoiceRecordPage() {
     }
   }
 
-  // ✅ Pagination logic
+  // ✅ Filter invoices by search term
+  const filteredInvoices = invoices.filter(
+    (inv) =>
+      inv.projects?.project_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inv.customers?.customer_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      inv.status?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  // ✅ Pagination logic (ใช้ filteredInvoices แทน invoices)
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
-  const currentInvoices = invoices.slice(indexOfFirstItem, indexOfLastItem)
-  const totalPages = Math.ceil(invoices.length / itemsPerPage)
+  const currentInvoices = filteredInvoices.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredInvoices.length / itemsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
@@ -83,6 +95,11 @@ export default function InvoiceRecordPage() {
           <input
             type="text"
             placeholder="🔍 ค้นหา Invoice..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value)
+              setCurrentPage(1) // ✅ รีเซ็ตไปหน้าแรกเมื่อค้นหา
+            }}
             className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
           />
 
@@ -97,8 +114,8 @@ export default function InvoiceRecordPage() {
 
         {loading ? (
           <p>กำลังโหลดข้อมูล...</p>
-        ) : invoices.length === 0 ? (
-          <p>ไม่มีข้อมูล</p>
+        ) : filteredInvoices.length === 0 ? (
+          <p>ไม่พบข้อมูล</p>
         ) : (
           <>
             <table className="w-full border text-sm">
