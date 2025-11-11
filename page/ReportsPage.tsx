@@ -117,11 +117,12 @@ export default function ReportsPage() {
                 <th className="p-2 border">เครดิตเทอม</th>
                 <th className="p-2 border">คาดว่าเงินเข้า</th>
                 <th className="p-2 border">สถานะ</th>
+                <th className="p-2 border">การดำเนินการ</th> {/* New column for the button */}
               </tr>
             </thead>
             <tbody>
               {currentReports.map((r) => (
-                <tr key={r.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(r)}>
+                <tr key={r.id} className="hover:bg-gray-50">
                   <td className="p-2 border">{r.customer_name}</td>
                   <td className="p-2 border">{r.project_name}</td>
                   <td className="p-2 border text-right">{r.amount?.toLocaleString()}</td>
@@ -129,6 +130,14 @@ export default function ReportsPage() {
                   <td className="p-2 border text-center">{r.credit_term_days || '-'}</td>
                   <td className="p-2 border text-blue-600">{r.expected_payment_date}</td>
                   <td className="p-2 border">{r.status}</td>
+                  <td className="p-2 border text-center">
+                    <button
+                      onClick={() => handleRowClick(r)}
+                      className="bg-[#2b71ed] text-white px-3 py-1 rounded hover:bg-[#2826a9] transition text-xs"
+                    >
+                      ดูรายละเอียด
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
