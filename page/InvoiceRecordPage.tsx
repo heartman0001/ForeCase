@@ -17,7 +17,7 @@ export default function InvoiceRecordPage() {
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceRecord | null>(null)
 
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 12
 
   // ✅ Search state
   const [searchTerm, setSearchTerm] = useState("")
@@ -86,7 +86,7 @@ export default function InvoiceRecordPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <div className="max-w-12xl mx-auto bg-white p-6 rounded-lg shadow-md">
         <h1 className="text-2xl font-bold mb-4">📊 รายการ Invoice</h1>
 
         {/* Action Bar */}
@@ -118,48 +118,48 @@ export default function InvoiceRecordPage() {
           <p>ไม่พบข้อมูล</p>
         ) : (
           <>
-            <table className="w-full border text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2 border">Project</th>
-                  <th className="p-2 border">Customer</th>
-                  <th className="p-2 border">Amount</th>
-                  <th className="p-2 border">Billing Date</th>
-                  <th className="p-2 border">Status</th>
-                  <th className="p-2 border">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentInvoices.map((inv) => (
-                  <tr key={inv.id} className="text-center hover:bg-gray-50">
-                    <td className="border p-2">{inv.projects?.project_name || "-"}</td>
-                    <td className="border p-2">{inv.customers?.customer_name || "-"}</td>
-                    <td className="border p-2">
-                      {Number(inv.amount || 0).toLocaleString()}
-                    </td>
-                    <td className="border p-2">{inv.billing_date || "-"}</td>
-                    <td className="border p-2">{inv.status || "Pending"}</td>
-                    <td className="border p-2 space-x-2">
-                      <button
-                        onClick={() => {
-                          setSelectedInvoice(inv)
-                          setIsEditOpen(true)
-                        }}
-                        className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
-                      >
-                        ✏️ แก้ไข
-                      </button>
-                      <button
-                        onClick={() => handleDelete(inv.id)}
-                        className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
-                      >
-                        🗑️ ลบ
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <table className="min-w-full border text-sm table-auto">
+  <thead className="bg-gray-100">
+    <tr>
+      <th className="px-4 py-3 border text-left">Project</th>
+      <th className="px-4 py-3 border text-left">Customer</th>
+      <th className="px-4 py-3 border text-right">Amount</th>
+      <th className="px-4 py-3 border text-center">Billing Date</th>
+      <th className="px-4 py-3 border text-center">Status</th>
+      <th className="px-4 py-3 border text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {currentInvoices.map((inv) => (
+      <tr key={inv.id} className="hover:bg-gray-50">
+        <td className="border px-4 py-3">{inv.projects?.project_name || "-"}</td>
+        <td className="border px-4 py-3">{inv.customers?.customer_name || "-"}</td>
+        <td className="border px-4 py-3 text-right">
+          {Number(inv.amount || 0).toLocaleString()}
+        </td>
+        <td className="border px-4 py-3 text-center">{inv.billing_date || "-"}</td>
+        <td className="border px-4 py-3 text-center">{inv.status || "Pending"}</td>
+        <td className="border px-4 py-3 space-x-2 text-center">
+          <button
+            onClick={() => {
+              setSelectedInvoice(inv)
+              setIsEditOpen(true)
+            }}
+            className="bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700"
+          >
+            ✏️ แก้ไข
+          </button>
+          <button
+            onClick={() => handleDelete(inv.id)}
+            className="bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700"
+          >
+            🗑️ ลบ
+          </button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
 
             {/* ✅ Pagination Controls */}
             <div className="flex justify-center items-center gap-2 mt-4">
