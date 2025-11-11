@@ -16,7 +16,7 @@ export default function ReportsPage() {
   // ✅ Search & Pagination state
   const [searchTerm, setSearchTerm] = useState("")
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 5
+  const itemsPerPage = 10
 
   useEffect(() => {
     loadReport()
@@ -99,6 +99,10 @@ export default function ReportsPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
         />
+        <ExportButtons
+          targetRef={tableRef}
+          fileName={`Monthly_Report_${month}_${year}`}
+        />
       </div>
 
       {loading ? (
@@ -107,7 +111,7 @@ export default function ReportsPage() {
         <p>ไม่มีข้อมูลในเดือนนี้</p>
       ) : (
         <>
-          <table className="w-full border text-sm">
+          <table ref={tableRef} className="w-full border text-sm">
             <thead className="bg-gray-100">
               <tr>
                 <th className="p-2 border">ลูกค้า</th>
