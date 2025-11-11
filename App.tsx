@@ -11,6 +11,9 @@ import InvoiceRecordPage from "./page/InvoiceRecordPage";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import ReportsPage from "./page/ReportsPage";
+import CustomerDashboardPage from "./page/CustomerDashboardPage";
+import CustomerDetailPage from "./page/CustomerDetailPage";
+import PaymentCalendarPage from "./page/PaymentCalendarPage";
 
 export default function App() {
   return (
@@ -21,6 +24,7 @@ export default function App() {
           <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          {/* <Route path="/customers/:id" element={<CustomerDetailPage />} /> */}
 
           {/* ✅ หน้าหลัง login ใช้ Layout */}
           <Route
@@ -31,6 +35,31 @@ export default function App() {
               </Layout>
             }
           />
+          <Route
+            path="/customers/:id"
+            element={
+              <Layout>
+                <CustomerDetailPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/dashboard/customer"
+            element={
+              <Layout>
+                <CustomerDashboardPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/dashboard/calendar"
+            element={
+              <Layout>
+                <PaymentCalendarPage />
+              </Layout>
+            }
+          />
+
           <Route
             path="/invoiceRecord"
             element={
