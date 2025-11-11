@@ -7,6 +7,7 @@ import ProjectsPage from "./page/ProjectsPage";
 import InstallmentsPage from "./page/InstallmentsPage";
 import UsersPage from "./page/UsersPage";
 import NotificationsPage from "./page/NotificationsPage";
+import InvoiceRecordPage from "./page/InvoiceRecordPage";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 
@@ -29,6 +30,15 @@ export default function App() {
               </Layout>
             }
           />
+          <Route
+            path="/invoiceRecord"
+            element={
+              <Layout>
+                <InvoiceRecordPage />
+              </Layout>
+            }
+          />
+
           <Route
             path="/customers"
             element={

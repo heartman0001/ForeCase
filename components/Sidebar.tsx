@@ -4,10 +4,11 @@ import { Home, Users, Briefcase, Bell, FileText, Layers } from "lucide-react"
 export default function Sidebar() {
   const navItems = [
     { path: "/dashboard", label: "Dashboard", icon: <Home className="w-5 h-5" /> },
-    { path: "/customers", label: "Customers", icon: <Users className="w-5 h-5" /> },
-    { path: "/projects", label: "Projects", icon: <Briefcase className="w-5 h-5" /> },
-    { path: "/installments", label: "Installments", icon: <Layers className="w-5 h-5" /> },
-    { path: "/users", label: "Users", icon: <FileText className="w-5 h-5" /> },
+    { path: "/invoiceRecord", label: "InvoiceRecord(การวางบิล การรับเงิน)", icon: <Home className="w-5 h-5" /> },
+    { path: "/customers", label: "Customers(ลูกค้า)", icon: <Users className="w-5 h-5" /> },
+    { path: "/projects", label: "Projects(โปรเจค)", icon: <Briefcase className="w-5 h-5" /> },
+    { path: "/installments", label: "Installments(หน้าการผ่อนชำระ)", icon: <Layers className="w-5 h-5" /> },
+    // { path: "/users", label: "Users", icon: <FileText className="w-5 h-5" /> },
     { path: "/notifications", label: "Notifications", icon: <Bell className="w-5 h-5" /> },
   ]
 
