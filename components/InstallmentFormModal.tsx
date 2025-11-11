@@ -72,7 +72,107 @@ export default function InstallmentFormModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div className="bg-white rounded-2xl p-6 w-full max-w-lg shadow-lg">
+    <h2 className="text-xl font-semibold mb-4">
+      {initialData ? "แก้ไขงวดการชำระเงิน" : "เพิ่มงวดการชำระเงิน"}
+    </h2>
 
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Project */}
+      <div>
+        <label>ระบุว่างวดนี้เป็นของโครงการใด</label>
+        <select
+          name="project_id"
+          value={formData.project_id}
+          onChange={handleChange}
+          required
+          className="w-full border px-3 py-2 rounded-lg"
+        >
+          <option value="">เลือกโครงการ</option>
+          {projects.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.project_name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Installment Info */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label>งวดที่เท่าไร:</label>
+          <input
+            type="number"
+            name="installment_no"
+            value={formData.installment_no}
+            onChange={handleChange}
+            placeholder="เช่น งวดที่ 1, 2, 3 "
+            className="w-full border px-3 py-2 rounded-lg"
+            required
+          />
+        </div>
+        <div>
+          <label>จำนวนงวดทั้งหมดของโครงการ:</label>
+          <input
+            type="number"
+            name="installment_total"
+            value={formData.installment_total}
+            onChange={handleChange}
+            placeholder="เช่น 3 งวด, 6 งวด "
+            className="w-full border px-3 py-2 rounded-lg"
+            required
+          />
+        </div>
+      </div>
+
+      {/* Amount */}
+      <div>
+        <label>จำนวนเงินของงวดนั้น (ก่อนหัก VAT/WHT) :</label>
+        <input
+          type="number"
+          name="amount"
+          value={formData.amount}
+          onChange={handleChange}
+          placeholder="จำนวนเงิน"
+          className="w-full border px-3 py-2 rounded-lg"
+          required
+        />
+      </div>
+
+      {/* Dates */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="text-sm">วันที่วางบิล</label>
+          <input
+            type="date"
+            name="billing_date"
+            value={formData.billing_date || ""}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg"
+          />
+        </div>
+        <div>
+          <label className="text-sm">คาดว่าจะได้รับเงิน</label>
+          <input
+            type="date"
+            name="expected_payment_date"
+            value={formData.expected_payment_date || ""}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded-lg"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label className="text-sm">วันที่รับจริง</label>
+        <input
+          type="date"
+          name="actual_payment_date"
+          value={formData.actual_payment_date || ""}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded-lg"
+        />
+      </div>
 
       {/* Status */}
       <div>
