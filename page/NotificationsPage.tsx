@@ -65,9 +65,9 @@ export default function NotificationsPage() {
                   <p className="text-sm text-gray-600 mt-1">
                     กำหนดชำระ: {n.due_date ? new Date(n.due_date).toLocaleDateString('th-TH') : '-'}
                   </p>
-                  {n.invoice_records && (
+                  {n.invoice_records && n.invoice_records.length > 0 && (
                     <p className="text-sm text-gray-400">
-                      สถานะใบแจ้งหนี้: {n.invoice_records.status}
+                      สถานะใบแจ้งหนี้: {n.invoice_records[0].status}
                     </p>
                   )}
                 </div>
