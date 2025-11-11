@@ -35,6 +35,16 @@ export default function ReportsPage() {
   }
 
 
+  const handleRowClick = (entry: any) => {
+    setSelectedReportEntry(entry)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedReportEntry(null)
+  }
+
   // ✅ Filter reports by search term
   const filteredReport = report.filter(
     (r) =>
@@ -111,7 +121,7 @@ export default function ReportsPage() {
             </thead>
             <tbody>
               {currentReports.map((r) => (
-                <tr key={r.id} className="hover:bg-gray-50">
+                <tr key={r.id} className="hover:bg-gray-50 cursor-pointer" onClick={() => handleRowClick(r)}>
                   <td className="p-2 border">{r.customer_name}</td>
                   <td className="p-2 border">{r.project_name}</td>
                   <td className="p-2 border text-right">{r.amount?.toLocaleString()}</td>
@@ -149,7 +159,7 @@ export default function ReportsPage() {
 
       <ReportCustomerDetailModal
         isOpen={isModalOpen}
-        // onClose={handleCloseModal}
+        onClose={handleCloseModal}
         reportEntry={selectedReportEntry}
       />
     </div>
