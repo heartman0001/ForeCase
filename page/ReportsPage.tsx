@@ -149,7 +149,7 @@ export default function ReportsPage() {
 
       <ReportCustomerDetailModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        // onClose={handleCloseModal}
         reportEntry={selectedReportEntry}
       />
     </div>
