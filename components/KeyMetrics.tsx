@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { getInstallments } from '../services/installmentService';
-import { isPast, parseISO } from 'date-fns';
 
 const KeyMetrics = () => {
   const [metrics, setMetrics] = useState({
@@ -44,31 +43,44 @@ const KeyMetrics = () => {
     calculateMetrics();
   }, []);
 
-  const formatCurrency = (amount: number) => new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(amount);
+  const formatCurrency = (amount: number) =>
+    new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(amount);
 
   if (loading) {
-    return <div className="p-4 bg-gray-800 rounded-lg shadow-lg text-white">Loading Metrics...</div>;
+    return (
+      <div className="p-4 bg-white border border-gray-200 rounded-xl shadow-md text-[#2826a9]">
+        Loading Metrics...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="p-4 bg-gray-800 rounded-lg shadow-lg text-red-500">{error}</div>;
+    return (
+      <div className="p-4 bg-white border border-gray-200 rounded-xl shadow-md text-red-600">
+        {error}
+      </div>
+    );
   }
 
   return (
-    <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white h-full">
-      <h2 className="text-xl font-semibold mb-4">Key Metrics</h2>
+    <div className="bg-white p-6 rounded-xl shadow-md h-full">
+      <h2 className="text-xl font-semibold mb-4 text-[#2826a9]">Key Metrics</h2>
       <div className="space-y-4">
         <div>
-          <p className="text-gray-400 text-sm">Total Revenue (Paid)</p>
-          <p className="text-2xl font-bold text-green-400">{formatCurrency(metrics.totalRevenue)}</p>
+          <p className="text-gray-500 text-sm">Total Revenue (Paid)</p>
+          <p className="text-2xl font-bold text-[#2b71ed]">
+            {formatCurrency(metrics.totalRevenue)}
+          </p>
         </div>
         <div>
-          <p className="text-gray-400 text-sm">Outstanding Revenue</p>
-          <p className="text-2xl font-bold text-yellow-400">{formatCurrency(metrics.outstandingRevenue)}</p>
+          <p className="text-gray-500 text-sm">Outstanding Revenue</p>
+          <p className="text-2xl font-bold text-[#2826a9]">
+            {formatCurrency(metrics.outstandingRevenue)}
+          </p>
         </div>
         <div>
-          <p className="text-gray-400 text-sm">Overdue Installments</p>
-          <p className="text-2xl font-bold text-red-500">{metrics.overdueCount}</p>
+          <p className="text-gray-500 text-sm">Overdue Installments</p>
+          <p className="text-2xl font-bold text-red-600">{metrics.overdueCount}</p>
         </div>
       </div>
     </div>
