@@ -99,10 +99,6 @@ export default function ReportsPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full md:w-1/3 border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#2b71ed]"
         />
-        <ExportButtons
-          targetRef={tableRef} // Changed to tableRef
-          fileName={`Monthly_Report_${month}_${year}`}
-        />
       </div>
 
       {loading ? (
@@ -165,6 +161,10 @@ export default function ReportsPage() {
               ถัดไป ▶
             </button>
           </div>
+          <ExportButtons
+            targetRef={tableRef} // Changed to tableRef
+            fileName={`Monthly_Report_${month}_${year}`}
+          />
         </>
       )}
 
