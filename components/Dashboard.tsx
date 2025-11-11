@@ -62,16 +62,16 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* <h1 className="text-2xl font-bold mb-4">📊 รายการ Invoice</h1>
+      <h1 className="text-2xl font-bold mb-4">📊 รายการ Invoice</h1>
       
       <button
         onClick={() => setIsAddOpen(true)}
         className="mb-4 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
       >
          เพิ่ม Invoice
-      </button> */}
+      </button>
 
-      {/* {loading ? (
+      {loading ? (
         <p>กำลังโหลดข้อมูล...</p>
       ) : invoices.length === 0 ? (
         <p>ไม่มีข้อมูล</p>
@@ -115,8 +115,8 @@ export default function Dashboard() {
               </tr>
             ))}
           </tbody>
-        </table> */}
-      {/* )} */}
+        </table>
+      )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <RevenueByProjectChart />
