@@ -57,14 +57,18 @@ export interface Installment {
 }
 
 /** ตารางหลัก (invoice_records) */
+/** ตารางหลัก (invoice_records) */
 export interface InvoiceRecord {
   id: number
+  project_id: number              // ✅ FK ไป projects
+  customer_id: number             // ✅ FK ไป customers
   year?: number | null
   month?: string | null
   sale_name?: string | null
   pm_name?: string | null
   phase?: number | null
-  project_name?: string | null
+  installment_no?: number | null
+  installment_total?: number | null
   amount?: number | string | null
   vat_percent?: number | null
   vat_amount?: number | null
@@ -77,15 +81,48 @@ export interface InvoiceRecord {
   billing_date?: string | null
   payment_cycle?: string | null
   payment_date?: string | null
+  credit_term_days?: number | null
+  expected_collection_date?: string | null  
   note?: string | null
   ref_doc?: string | null
   status?: string | null
   created_at?: string | null
   updated_at?: string | null
 
-  // field from select('*, customers(...)')
+  // Join
   customers?: Customer | null
+  projects?: Project | null
 }
+
+// export interface InvoiceRecord {
+//   id: number
+//   year?: number | null
+//   month?: string | null
+//   sale_name?: string | null
+//   pm_name?: string | null
+//   phase?: number | null
+//   project_name?: string | null
+//   amount?: number | string | null
+//   vat_percent?: number | null
+//   vat_amount?: number | null
+//   total_with_vat?: number | string | null
+//   wht_percent?: number | null
+//   wht_amount?: number | string | null
+//   net_amount?: number | string | null
+//   real_received?: number | string | null
+//   billing_cycle?: string | null
+//   billing_date?: string | null
+//   payment_cycle?: string | null
+//   payment_date?: string | null
+//   note?: string | null
+//   ref_doc?: string | null
+//   status?: string | null
+//   created_at?: string | null
+//   updated_at?: string | null
+
+//   // field from select('*, customers(...)')
+//   customers?: Customer | null
+// }
 
 /** ตารางผู้ใช้ระบบ (users) */
 export interface AppUser {

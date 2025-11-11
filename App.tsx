@@ -10,6 +10,7 @@ import NotificationsPage from "./page/NotificationsPage";
 import InvoiceRecordPage from "./page/InvoiceRecordPage";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
+import ReportsPage from "./page/ReportsPage";
 
 export default function App() {
   return (
@@ -79,6 +80,8 @@ export default function App() {
               </Layout>
             }
           />
+          <Route path="/reports" element={<Layout><ReportsPage /></Layout>} />
+
         </Routes>
       </BrowserRouter>
     </AuthProvider>
