@@ -34,8 +34,7 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
-            <h2 className="text-lg font-semibold text-gray-400">Total Projects</h2>
-            <p className="text-4xl font-bold">{projectCount}</p>
+
         </div>
         <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-white">
             <h2 className="text-lg font-semibold text-gray-400">Total Customers</h2>
@@ -43,7 +42,9 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+
         <RevenueByProjectChart />
         <RevenueByCustomerChart />
       </div>
