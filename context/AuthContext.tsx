@@ -46,9 +46,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   // ✅ Logout
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
+  const signOut = async (navigate: (path: string) => void) => {
+    console.log('Attempting to sign out...');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error.message);
+      } else {
+        console.log('Successfully signed out from Supabase.');
+        setUser(null);
+        console.log('User state set to null.');
+        navigate('/login'); // Redirect to login page
+      }
+    } catch (err) {
+      console.error('An unexpected error occurred during sign out:', err);
+    }
   }
 
   return (

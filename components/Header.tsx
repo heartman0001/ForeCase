@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { LogoutIcon, UserCircleIcon, ChevronDownIcon, PencilIcon } from './icons'
+import { useNavigate } from 'react-router-dom'
 
 interface HeaderProps {
   onNavigateToProfile: () => void
 }
 
 const Header: React.FC<HeaderProps> = ({ onNavigateToProfile }) => {
-  const { user, signOut } = useAuth() // ✅ ใช้ชื่อใหม่จาก AuthContext
+  const { user, signOut } = useAuth()
+  const navigate = useNavigate() // Initialize useNavigate
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
@@ -18,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigateToProfile }) => {
   }
 
   const handleLogout = async () => {
-    await signOut()
+    await signOut(navigate) // Pass navigate to signOut
     setIsDropdownOpen(false)
   }
 

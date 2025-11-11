@@ -17,8 +17,8 @@ import PaymentCalendarPage from "./page/PaymentCalendarPage";
 
 export default function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           {/* หน้าก่อน login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
@@ -112,7 +112,7 @@ export default function App() {
           <Route path="/reports" element={<Layout><ReportsPage /></Layout>} />
 
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
